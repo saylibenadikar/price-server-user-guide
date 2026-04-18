@@ -38,19 +38,13 @@ The combination determines your program name: `EELEC-013532223` or `TOU-PRIME-Ea
 
 ## How to access
 
-### Interactive API reference
+### Documentation & API reference
 
-Browse and test all endpoints in your browser:
-
-```
-https://price.grid-coordination.energy/api
-```
-
-The interactive reference (powered by [Scalar](https://github.com/scalar/scalar)) lets you explore endpoints, see schemas, and make live requests against the server. The underlying OpenAPI specification is also available directly:
-
-```
-https://price.grid-coordination.energy/openapi.json
-```
+| URL | What |
+|-----|------|
+| [/docs](https://price.grid-coordination.energy/docs) | User guide (this document) |
+| [/api](https://price.grid-coordination.energy/api) | Interactive API reference — browse endpoints, see schemas, try requests |
+| [/openapi.json](https://price.grid-coordination.energy/openapi.json) | OpenAPI specification (JSON) for code generators and tooling |
 
 ### HTTPS (REST API)
 
