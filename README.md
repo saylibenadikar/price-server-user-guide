@@ -4,12 +4,15 @@ Public documentation for the [Grid Coordination](https://grid-coordination.energ
 
 ## What is the price server?
 
-The price server publishes real-time and historical electricity prices for **PG&E** and **SCE** rate schedules, plus hourly marginal GHG emissions intensity (MOER) for 11 California grid regions, as OpenADR 3 programs and events.
+The price server is a universal electricity price signal layer. It publishes hourly prices from two kinds of tariffs, plus GHG emissions data — all as [OpenADR 3.1.0](https://www.openadr.org/) programs and events.
 
-- **Prices**: Marginal cost in USD/kWh from the CAISO Day-Ahead Market via [GridX](https://www.gridx.com/) CalFUSE
-- **GHG emissions**: Marginal Operating Emissions Rate (MOER) in g CO2/kWh from [SGIP Signal](https://sgipsignal.com/) (operated by WattTime for the CPUC)
+- **Feed-based pricing** — dynamic CAISO Day-Ahead Market prices via [GridX](https://www.gridx.com/) CalFUSE, updated hourly
+- **Computed pricing** — published rate schedules from [OpenEI URDB](https://openei.org/wiki/Utility_Rate_Database), prices generated from the tariff definition
+- **GHG emissions** — Marginal Operating Emissions Rate (MOER) in g CO2/kWh from [SGIP Signal](https://sgipsignal.com/) (operated by WattTime for the CPUC)
 
-## Available tariffs — 31 rate schedules
+An EMS or appliance (VEN) just sees hourly price intervals and optimizes its energy use — it doesn't need to know whether the price comes from a dynamic market or a published TOU schedule. When prices vary, the appliance optimizes. When they don't (flat rate), there's nothing to optimize — but the protocol is the same.
+
+## Feed-based tariffs (GridX) — 31 rate schedules
 
 **PG&E — 16 tariffs** (each served across 59 distribution feeders)
 
@@ -41,6 +44,18 @@ The price server publishes real-time and historical electricity prices for **PG&
 
 Each tariff × location combination is an OpenADR 3 program. PG&E programs are named `<RATE>-<9-digit-circuit-id>` (e.g. `EELEC-013532223`). SCE programs are named `<RATE>-<substation>` (e.g. `TOU-PRIME-Eagle Rock`).
 
+### Computed tariffs (URDB) — 3 initial rate schedules
+
+Published rate schedules from the [OpenEI Utility Rate Database](https://openei.org/wiki/Utility_Rate_Database). Prices are computed from the tariff definition — no external data feed needed. Coverage will expand to all California tariffs.
+
+| Utility | Rate | Type | Program |
+|---------|------|------|---------|
+| **PG&E** | E-1 Region P | Residential TOU | `PGE-E-1 - Baseline Region P` |
+| **SCE** | TOU-D-2 | Residential TOU | `SCE-Time-of-use Domestic: TOU-D-2` |
+| **SDG&E** | DR-TOU Coastal | Residential TOU | `SDGE-DR- TOU- Coastal Baseline Region` |
+
+One program per tariff. Unlike feed-based tariffs, computed tariffs don't vary by circuit or substation — the published rate schedule applies uniformly.
+
 ### GHG emissions (MOER)
 
 | Region | Program | Description |
@@ -59,11 +74,11 @@ Each tariff × location combination is an OpenADR 3 program. PG&E programs are n
 
 MOER programs publish hourly marginal operating emissions rate in **g CO2/kWh**, aggregated from native 5-minute [SGIP Signal](https://sgipsignal.com/) data. Each event contains 24 hourly intervals, same as pricing events.
 
-**Total: 31 pricing tariffs + 11 GHG emissions regions** (1,645 OpenADR 3 programs)
+**Total: 34 pricing tariffs + 11 GHG emissions regions** (31 feed-based + 3 computed + 11 GHG)
 
 ## Finding your program
 
-To get prices relevant to you, you need two things:
+**For feed-based tariffs (GridX):** You need two things:
 
 1. **Rate schedule** — which tariff applies to your service (e.g. `EELEC` for PG&E residential, `TOU-PRIME` for SCE residential). See the tariff table above.
 2. **Circuit or substation** — which part of the grid you're on. For PG&E, this is a 9-digit circuit ID identifying your distribution feeder. For SCE, it's a substation name.
@@ -71,6 +86,8 @@ To get prices relevant to you, you need two things:
 The combination determines your program name: `EELEC-013532223` or `TOU-PRIME-Eagle Rock`.
 
 **How to find your circuit or substation:** If you don't know which circuit or substation serves your location, you can browse the full list in [circuits.md](circuits.md) — it includes the substation name, division, and region for every PG&E circuit, and all 46 SCE substation names. PG&E customers on the Dynamic Rate Pilot can find their circuit ID on their billing statement or through the [Priicer community](https://forum.priicer.com/t/pg-e-dynamic-pilot-california/33).
+
+**For computed tariffs (URDB):** Just find the program by name — no circuit needed. These programs use the tariff name directly (e.g. `PGE-E-1 - Baseline Region P`).
 
 ## How to access
 
@@ -111,12 +128,12 @@ curl -s https://price.grid-coordination.energy/openadr3/3.1.0/notifiers | python
 
 ### Programs
 
-One program per rate schedule × circuit/substation:
+One program per tariff (computed) or per tariff × location (feed-based):
 
-| Field | PG&E Example | SCE Example |
-|-------|-------------|-------------|
-| `programName` | `EELEC-013532223` | `TOU-PRIME-Eagle Rock` |
-| `programLongName` | `PG&E EELEC — circuit 013532223` | `SCE TOU-PRIME — substation Eagle Rock` |
+| Field | Feed-based (GridX) | Computed (URDB) |
+|-------|-------------------|-----------------|
+| `programName` | `EELEC-013532223` | `PGE-E-1 - Baseline Region P` |
+| `programLongName` | `PG&E EELEC — circuit 013532223` | `Pacific Gas & Electric Co E-1 - Baseline Region P (TOU, URDB)` |
 | `payloadDescriptors[0].payloadType` | `PRICE` | `PRICE` |
 | `payloadDescriptors[0].units` | `kWh` | `kWh` |
 | `payloadDescriptors[0].currency` | `USD` | `USD` |
@@ -135,7 +152,9 @@ One event per program per day, with 24 hourly intervals:
 
 ### Forward window and history
 
-**Prices**: The price server fetches prices from GridX on startup and every hour. In practice, CAISO Day-Ahead Market data is available for **today + ~2 days** (day-ahead prices are typically published by ~4:30 PM PST). Historical prices go back to approximately August 2024 for PG&E and July 2025 for SCE.
+**Feed-based prices (GridX)**: Fetched on startup and every hour. In practice, CAISO Day-Ahead Market data is available for **today + ~2 days** (day-ahead prices are typically published by ~4:30 PM PST). Historical prices go back to approximately August 2024 for PG&E and July 2025 for SCE.
+
+**Computed prices (URDB)**: Generated on startup and refreshed daily. Events cover **today + 2 days**. No historical backfill — the tariff definition is the source of truth, and prices are computed on demand for the forward window.
 
 **GHG emissions**: MOER data is fetched hourly from SGIP Signal. Today's event fills in progressively as 5-minute data becomes available. Historical data goes back approximately 30 days from initial deployment.
 
