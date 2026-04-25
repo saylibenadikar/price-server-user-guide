@@ -15,7 +15,7 @@ By the end, you'll have a script that:
 
 ## The price server
 
-A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers 9 rate schedules across PG&E (59 circuits) and SCE (46 substations) — 492 programs total. Base URL:
+A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Base URL:
 
 ```
 https://price.grid-coordination.energy/openadr3/3.1.0
@@ -72,7 +72,7 @@ EELEC-013532223  b54d3d1f-bc87-4e47-bbc1-2b95958283fc
 50 programs
 ```
 
-> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are 492 total — 6 PG&E rates × 59 circuits + 3 SCE rates × 46 substations. Paginate with `ven.api.get_programs(skip=50)` to see more.
+> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are 1,645 total — 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Paginate with `ven.api.get_programs(skip=50)` to see more.
 >
 > All client methods (`programs()`, `find_program_by_name()`, `poll_events()`) return coerced [Pydantic](https://docs.pydantic.dev/) models — access fields as attributes, not dict keys.
 >
@@ -281,9 +281,9 @@ Available MOER programs: `MOER-PGE`, `MOER-SCE`, `MOER-SDGE`, `MOER-LADWP`, `MOE
 
 ## Going further
 
-- **All 503 programs**: paginate with `ven.api.get_programs(skip=50)`, `skip=100`, etc. The first page shows PG&E EELEC circuits; later pages have BEV1, B6, B19P, SCE tariffs, and MOER programs.
-- **Other PG&E rates**: `BEV1` (commercial EV), `BEV2P`/`BEV2S` (business EV), `B6` (small commercial), `B19P` (medium commercial). Same 59 circuits per rate.
-- **SCE rates**: `TOU-PRIME`, `TOU-D-49`, `TOU-D-58` — 46 substations each. SCE prices are significantly higher (~$0.18/kWh vs PG&E's ~$0.03/kWh).
+- **All 1,645 programs**: paginate with `ven.api.get_programs(skip=50)`, `skip=100`, etc. Programs are grouped by tariff — PG&E rates first, then SCE, then MOER.
+- **PG&E tariffs (16)**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`). 59 circuits per tariff.
+- **SCE tariffs (15)**: residential TOU, EV, general service, public authority. 46 substations per tariff. SCE prices are significantly higher (~$0.18/kWh vs PG&E's ~$0.03/kWh).
 - **GHG emissions**: 11 MOER programs covering California and neighboring grid regions. Values in g CO2/kWh. See [README.md#ghg-emissions-moer](README.md#ghg-emissions-moer) for the full list.
 - **Subscribe to price updates via MQTT**: the broker at `mqtt.grid-coordination.energy` supports anonymous subscribe on `openadr3/3.1.0/events/#`. See [mqtt-notifications.md](mqtt-notifications.md) for details.
 - **User-Agent**: set `user_agent="your-app/1.0"` when creating the client so the server operator can identify your application in access logs.

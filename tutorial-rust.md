@@ -15,7 +15,7 @@ By the end, you'll have a Rust program that:
 
 ## The price server
 
-A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers 9 rate schedules across PG&E (59 circuits) and SCE (46 substations) — 492 programs total. Base URL:
+A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Base URL:
 
 ```
 https://price.grid-coordination.energy/openadr3/3.1.0/
@@ -77,7 +77,7 @@ cargo run
 Output:
 
 ```
-492 programs (first 10):
+1,645 programs (first 10):
   EELEC-012041131
   EELEC-012640401
   EELEC-013532223

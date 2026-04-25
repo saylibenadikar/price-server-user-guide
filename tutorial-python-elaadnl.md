@@ -16,7 +16,7 @@ By the end, you'll have a script that:
 
 ## The price server
 
-A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market via [GridX](https://www.gridx.com/). Covers 9 rate schedules across PG&E (59 circuits) and SCE (46 substations) — 492 programs total. Base URL:
+A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market via [GridX](https://www.gridx.com/). Covers 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Base URL:
 
 ```
 https://price.grid-coordination.energy/openadr3/3.1.0
@@ -94,7 +94,7 @@ Output:
   EELEC-024040403
 ```
 
-> **Note:** The default page size is 50. There are 492 programs total (6 PG&E rates × 59 circuits + 3 SCE rates × 46 substations). Use the `pagination` parameter to page through them.
+> **Note:** The default page size is 50. There are 1,645 programs total (31 tariffs × location + 11 GHG regions). Use the `pagination` parameter to page through them.
 
 The ElaadNL models are Pydantic v2 with strong typing. Each program has:
 

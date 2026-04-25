@@ -165,7 +165,7 @@ For TLS, use `ssl://mqtt.grid-coordination.energy:8883`.
 
 ## When are notifications published?
 
-The price server's poll loop runs **every 60 minutes**. On each cycle it fetches the forward price window (today through today+6 days) from GridX for all 492 programs and creates or updates events for any new price data. You'll typically see a burst of notifications once per hour as fresh prices flow in.
+The price server's poll loop runs **every 60 minutes**. On each cycle it fetches the forward price window (today through today+6 days) from GridX for all 31 tariffs and creates or updates events for any new price data. You'll typically see a burst of notifications once per hour as fresh prices flow in.
 
 On server startup, the initial forward-window fetch also triggers notifications. Historical backfill events are published on first creation.
 

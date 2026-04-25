@@ -31,7 +31,7 @@ List programs to find the UUID for your program name:
 curl -s https://price.grid-coordination.energy/openadr3/3.1.0/programs | python3 -m json.tool
 ```
 
-The default page returns 50 programs. There are 503 total (492 pricing + 11 GHG emissions). Use `?skip=50` to paginate:
+The default page returns 50 programs. There are 1,645 total (31 pricing tariffs × location + 11 GHG regions). Use `?skip=50` to paginate:
 
 ```bash
 curl -s 'https://price.grid-coordination.energy/openadr3/3.1.0/programs?skip=50' | python3 -m json.tool
@@ -107,12 +107,12 @@ The price server also publishes hourly marginal GHG emissions (MOER) for 11 Cali
 Find a MOER program:
 
 ```bash
-curl -s 'https://price.grid-coordination.energy/openadr3/3.1.0/programs?skip=490&limit=50' \
+curl -s https://price.grid-coordination.energy/openadr3/3.1.0/programs \
   | python3 -c "
 import json, sys
 programs = json.load(sys.stdin)
 for p in programs:
-    if 'MOER-PGE' == p['programName']:
+    if p['programName'] == 'MOER-PGE':
         print(json.dumps(p, indent=2))
         break
 "

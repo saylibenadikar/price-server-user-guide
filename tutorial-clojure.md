@@ -81,7 +81,7 @@ Now list the programs. The Clojure client returns coerced entity maps with names
 ;    "EELEC-013921103" "EELEC-014052103"]
 ```
 
-> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are 492 total — 6 PG&E rates × 59 circuits + 3 SCE rates × 46 substations. PG&E program names follow the pattern `EELEC-<9-digit-circuit-id>`; SCE programs use `TOU-PRIME-<substation-name>`.
+> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are 1,645 total — 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. PG&E program names follow the pattern `EELEC-<9-digit-circuit-id>`; SCE programs use `TOU-PRIME-<substation-name>`.
 
 A simple tabular print:
 
@@ -301,9 +301,9 @@ If tomorrow's data hasn't been published yet (which sometimes happens early in t
 
 ## Going further
 
-- **All 503 programs**: paginate via the raw API: `(base/search-programs my-ven {:skip 50})`, `{:skip 100}`, etc.
-- **Other PG&E rates**: `BEV1` (commercial EV), `BEV2P`/`BEV2S`, `B6` (small commercial), `B19P` (medium commercial primary). Same 59 circuits per rate.
-- **SCE rates**: `TOU-PRIME`, `TOU-D-49`, `TOU-D-58` — 46 substations each. SCE prices are ~$0.18/kWh vs PG&E's ~$0.03/kWh.
+- **All 1,645 programs**: paginate via the raw API: `(base/search-programs my-ven {:skip 50})`, `{:skip 100}`, etc.
+- **PG&E tariffs (16)**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`). 59 circuits per tariff.
+- **SCE tariffs (15)**: residential TOU, EV, general service, public authority. 46 substations per tariff. SCE prices are ~$0.18/kWh vs PG&E's ~$0.03/kWh.
 - **GHG emissions**: `MOER-PGE`, `MOER-SCE`, `MOER-SDGE`, and 8 other regional programs publish hourly marginal GHG emissions in g CO2/kWh. Fetch the same way as prices: `(ven/poll-events my-ven {:program-id (ven/resolve-program-id my-ven "MOER-PGE")})`. See [README.md#ghg-emissions-moer](README.md#ghg-emissions-moer).
 - **Raw HTTP access**: `base/programs` returns coerced entities. For the raw wire format use `base/get-programs` (returns the HTTP response map).
 - **Subscribe to price updates via MQTT**: the broker at `mqtt.grid-coordination.energy` supports anonymous subscribe on `openadr3/3.1.0/events/#`. See [mqtt-notifications.md](mqtt-notifications.md). Use `ven/add-mqtt` and `ven/subscribe`.

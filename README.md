@@ -9,22 +9,37 @@ The price server publishes real-time and historical electricity prices for **PG&
 - **Prices**: Marginal cost in USD/kWh from the CAISO Day-Ahead Market via [GridX](https://www.gridx.com/) CalFUSE
 - **GHG emissions**: Marginal Operating Emissions Rate (MOER) in g CO2/kWh from [SGIP Signal](https://sgipsignal.com/) (operated by WattTime for the CPUC)
 
-## Available tariffs
+## Available tariffs — 31 rate schedules
 
-| Utility | Rate | Type | Programs |
-|---------|------|------|----------|
-| **PG&E** | `EELEC` | Standard residential electric | 59 (one per distribution feeder) |
-| **PG&E** | `BEV1` | Commercial EV charging | 59 |
-| **PG&E** | `BEV2P` | Business EV 2 Primary | 59 |
-| **PG&E** | `BEV2S` | Business EV 2 Secondary | 59 |
-| **PG&E** | `B6` | Small commercial | 59 |
-| **PG&E** | `B19P` | Medium commercial Primary | 59 |
-| **SCE** | `TOU-PRIME` | Residential time-of-use premium | 46 (one per substation) |
-| **SCE** | `TOU-D-49` | Residential time-of-use 4–9 PM peak | 46 |
-| **SCE** | `TOU-D-58` | Residential time-of-use 5–8 PM peak | 46 |
-| | | **Subtotal** | **492 pricing programs** |
+**PG&E — 16 tariffs** (each served across 59 distribution feeders)
 
-PG&E programs are named `<RATE>-<9-digit-circuit-id>` (e.g. `EELEC-013532223`). SCE programs are named `<RATE>-<substation>` (e.g. `TOU-PRIME-Eagle Rock`).
+| Rate | Type |
+|------|------|
+| `EELEC` | Standard residential electric |
+| `BEV1` | Commercial EV charging |
+| `BEV2P`, `BEV2S` | Business EV 2 (Primary / Secondary) |
+| `B6` | Small commercial |
+| `B10P`, `B10S` | Medium commercial 10 kW (Primary / Secondary) |
+| `B19P`, `B19S` | Medium commercial (Primary / Secondary) |
+| `B20P`, `B20S` | Large commercial (Primary / Secondary) |
+| `AG-A1`, `AG-A2` | Agricultural |
+| `AGBP`, `AGBS` | Agricultural Business (Primary / Secondary) |
+| `AGCP`, `AGCS` | Agricultural Commercial (Primary / Secondary) |
+
+**SCE — 15 tariffs** (each served across 46 substations)
+
+| Rate | Type |
+|------|------|
+| `TOU-PRIME` | Residential time-of-use premium |
+| `TOU-D-49` | Residential time-of-use 4–9 PM peak |
+| `TOU-D-58` | Residential time-of-use 5–8 PM peak |
+| `TOU-EV-8` | EV time-of-use 8 PM peak |
+| `TOU-EV-9P`, `TOU-EV-9S`, `TOU-EV-9ST` | EV time-of-use 9 PM (Primary / Secondary / Super TOU) |
+| `TOU-GS-1`, `TOU-GS-2`, `TOU-GS-3` | General Service |
+| `TOU-PA-2`, `TOU-PA-3` | Public Authority |
+| `TOU-8ST`, `TOU-8P`, `TOU-8S` | General Service 8 PM (Super TOU / Primary / Secondary) |
+
+Each tariff × location combination is an OpenADR 3 program. PG&E programs are named `<RATE>-<9-digit-circuit-id>` (e.g. `EELEC-013532223`). SCE programs are named `<RATE>-<substation>` (e.g. `TOU-PRIME-Eagle Rock`).
 
 ### GHG emissions (MOER)
 
@@ -44,7 +59,7 @@ PG&E programs are named `<RATE>-<9-digit-circuit-id>` (e.g. `EELEC-013532223`). 
 
 MOER programs publish hourly marginal operating emissions rate in **g CO2/kWh**, aggregated from native 5-minute [SGIP Signal](https://sgipsignal.com/) data. Each event contains 24 hourly intervals, same as pricing events.
 
-**Total: 503 programs** (492 pricing + 11 GHG emissions)
+**Total: 31 pricing tariffs + 11 GHG emissions regions** (1,645 OpenADR 3 programs)
 
 ## Finding your program
 
