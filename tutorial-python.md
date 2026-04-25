@@ -202,7 +202,7 @@ plt.show()
 
 ## 6. What about tomorrow (and the day after)?
 
-GridX publishes day-ahead and week-ahead prices as they become available (~4:30 PM PST for day-ahead). The price server fetches a **7-day forward window** — today plus the next 6 days — on startup and every poll cycle. So if you call `ven.poll_events("EELEC-013532223")`, you'll get back an event for each day GridX has data for, often including several days into the future.
+GridX publishes CAISO Day-Ahead Market prices as they become available (~4:30 PM PST). In practice, data is available for **today + ~2 days**. The price server fetches on startup and every poll cycle, so if you call `ven.poll_events("EELEC-013532223")`, you'll typically get events for today, tomorrow, and the day after.
 
 Here's a version of the price-fetching code that shows today and tomorrow side-by-side when both are available:
 

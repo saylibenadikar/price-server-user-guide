@@ -135,7 +135,7 @@ One event per program per day, with 24 hourly intervals:
 
 ### Forward window and history
 
-**Prices**: The price server fetches a **7-day forward window** (today + 6 days) from GridX on startup and every hour. Day-ahead prices are typically available by ~4:30 PM PST. Historical prices go back to approximately August 2024 for PG&E and July 2025 for SCE.
+**Prices**: The price server fetches prices from GridX on startup and every hour. In practice, CAISO Day-Ahead Market data is available for **today + ~2 days** (day-ahead prices are typically published by ~4:30 PM PST). Historical prices go back to approximately August 2024 for PG&E and July 2025 for SCE.
 
 **GHG emissions**: MOER data is fetched hourly from SGIP Signal. Today's event fills in progressively as 5-minute data becomes available. Historical data goes back approximately 30 days from initial deployment.
 

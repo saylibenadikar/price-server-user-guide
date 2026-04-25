@@ -252,7 +252,7 @@ If you've loaded both today and tomorrow (see section 7 below), you can render t
 
 ## 7. Tomorrow (and the day after)
 
-GridX publishes day-ahead and week-ahead prices as they become available (~4:30 PM PST for day-ahead). The price server fetches a **7-day forward window** — today plus the next 6 days — on startup and every poll cycle. So a single `ven/poll-events` call typically returns events covering today, tomorrow, and several days into the future.
+GridX publishes CAISO Day-Ahead Market prices as they become available (~4:30 PM PST). In practice, data is available for **today + ~2 days**. The price server fetches on startup and every poll cycle, so a single `ven/poll-events` call typically returns events for today, tomorrow, and the day after.
 
 Here's a version that groups the events by date and prints today and tomorrow side by side:
 
