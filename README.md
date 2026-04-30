@@ -181,6 +181,14 @@ Each tutorial covers listing programs, finding a circuit, fetching 24-hour price
 
 Real-time push notifications for price updates. See [mqtt-notifications.md](mqtt-notifications.md).
 
+## Contributing
+
+Issues, Discussions, and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow. In short:
+
+- **Questions, ideas, feature requests** → [Discussions](https://github.com/grid-coordination/price-server-user-guide/discussions)
+- **Confirmed bugs, doc fixes, agreed-upon changes** → [Issues](https://github.com/grid-coordination/price-server-user-guide/issues)
+- **Patches** → pull requests; please open a Discussion or Issue first for non-trivial changes
+
 ## License
 
 [MIT License](LICENSE) - Copyright (c) 2026 Clark Communications Corporation
