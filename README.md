@@ -126,6 +126,43 @@ The broker URLs are also available programmatically:
 curl -s https://price.grid-coordination.energy/openadr3/3.1.0/notifiers | python3 -m json.tool
 ```
 
+## Discovering what's currently live
+
+The tables above list rates and regions served at the time of writing. The price server is the source of truth — to see what's live right now, ask it directly.
+
+**Count programs:**
+
+```bash
+curl -s 'https://price.grid-coordination.energy/openadr3/3.1.0/programs?limit=50' \
+  | python3 -c 'import json, sys; print(len(json.load(sys.stdin)), "on first page")'
+```
+
+**Enumerate distinct rate prefixes (paginated):**
+
+```bash
+python3 - <<'EOF'
+import json, re, urllib.request
+prefixes, skip = set(), 0
+while True:
+    url = f"https://price.grid-coordination.energy/openadr3/3.1.0/programs?skip={skip}&limit=50"
+    page = json.load(urllib.request.urlopen(url))
+    if not page: break
+    for p in page:
+        name = p["programName"]
+        # PG&E feed-based: rate-<9-digit circuit>. SCE feed-based: TOU-<rate tokens>-<substation>.
+        m = re.match(r"^(.+)-\d{9}$", name) or re.match(r"^(TOU(?:-[A-Z0-9]+)+)-[A-Za-z]", name)
+        prefixes.add(m.group(1) if m else name)
+    if len(page) < 50: break
+    skip += 50
+for p in sorted(prefixes):
+    print(p)
+EOF
+```
+
+Output groups feed-based PG&E rates by prefix (`EELEC`, `BEV1`, …), SCE rates by prefix (`TOU-PRIME`, `TOU-D-49`, …), MOER regions by prefix (`MOER-PGE`, …), and lists URDB programs individually (each URDB tariff has its own full name).
+
+For paginated access in Python, Clojure, or Rust, see the language tutorials.
+
 ## Data model
 
 ### Programs
