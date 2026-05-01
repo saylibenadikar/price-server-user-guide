@@ -33,11 +33,11 @@ mkdir pge-prices && cd pge-prices
 
 ```clojure
 ;; deps.edn
-{:deps {energy.grid-coordination/clj-oa3-client {:mvn/version "0.3.3"}
-        metosin/oz                              {:mvn/version "2.0.0-alpha5"}}
+{:deps {energy.grid-coordination/clj-oa3-client {:mvn/version "0.3.4"}
+        metasoarous/oz                          {:mvn/version "2.0.0-alpha5"}}
  :aliases
  {:repl {:main-opts ["-m" "nrepl.cmdline"]
-         :extra-deps {nrepl/nrepl {:mvn/version "1.6.0"}}}}}
+         :extra-deps {nrepl/nrepl {:mvn/version "1.7.0"}}}}}
 ```
 
 > [oz](https://github.com/metasoarous/oz) is a Clojure wrapper around [Vega-Lite](https://vega.github.io/vega-lite/) for interactive charts. It's optional — used only for the chart at the end.
