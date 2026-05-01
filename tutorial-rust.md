@@ -15,7 +15,7 @@ By the end, you'll have a Rust program that:
 
 ## The price server
 
-A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Base URL:
+A public OpenADR 3 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers California utility rate schedules from PG&E and SCE, plus GHG emissions for California grid regions. Base URL:
 
 ```
 https://price.grid-coordination.energy/openadr3/3.1.0/
@@ -61,7 +61,7 @@ async fn main() {
     let filter: Filter<&str> = Filter::None;
     let programs = client.get_program_list(filter).await.unwrap();
 
-    println!("{} programs (first 10):", programs.len());
+    println!("Programs (first 10):");
     for p in programs.iter().take(10) {
         println!("  {}", p.content().program_name);
     }
@@ -77,7 +77,7 @@ cargo run
 Output:
 
 ```
-1,645 programs (first 10):
+Programs (first 10):
   EELEC-012041131
   EELEC-012640401
   EELEC-013532223
@@ -225,12 +225,7 @@ async fn main() {
 
 ## 5. What about other rates?
 
-The price server serves 9 rate schedules:
-
-| Utility | Rates | Circuits |
-|---------|-------|----------|
-| PG&E | EELEC, BEV1, BEV2P, BEV2S, B6, B19P | 59 feeders (9-digit IDs) |
-| SCE | TOU-PRIME, TOU-D-49, TOU-D-58 | 46 substations (names like "Eagle Rock") |
+The price server serves rate schedules across PG&E (each served across distribution feeders, named `<RATE>-<9-digit-circuit-id>`) and SCE (each served across substations, named `<RATE>-<substation>`), plus URDB-computed tariffs and GHG emissions for California grid regions. See [README.md](README.md#feed-based-tariffs-gridx) for the current rate list, or use the [Discovering what's currently live](README.md#discovering-whats-currently-live) snippets to query the server directly.
 
 To fetch a single page of programs (rather than the full list), use `get_programs` with `PaginationOptions`:
 

@@ -12,9 +12,11 @@ The price server is a universal electricity price signal layer. It publishes hou
 
 An EMS or appliance (VEN) just sees hourly price intervals and optimizes its energy use — it doesn't need to know whether the price comes from a dynamic market or a published TOU schedule. When prices vary, the appliance optimizes. When they don't (flat rate), there's nothing to optimize — but the protocol is the same.
 
-## Feed-based tariffs (GridX) — 31 rate schedules
+## Feed-based tariffs (GridX)
 
-**PG&E — 16 tariffs** (each served across 59 distribution feeders)
+> Tables below are current at time of writing — query `GET /programs` for the live list. See [Discovering what's currently live](#discovering-whats-currently-live) for a programmatic enumeration.
+
+**PG&E** (each rate served across PG&E distribution feeders)
 
 | Rate | Type |
 |------|------|
@@ -29,7 +31,7 @@ An EMS or appliance (VEN) just sees hourly price intervals and optimizes its ene
 | `AGBP`, `AGBS` | Agricultural Business (Primary / Secondary) |
 | `AGCP`, `AGCS` | Agricultural Commercial (Primary / Secondary) |
 
-**SCE — 15 tariffs** (each served across 46 substations)
+**SCE** (each rate served across SCE substations)
 
 | Rate | Type |
 |------|------|
@@ -44,17 +46,18 @@ An EMS or appliance (VEN) just sees hourly price intervals and optimizes its ene
 
 Each tariff × location combination is an OpenADR 3 program. PG&E programs are named `<RATE>-<9-digit-circuit-id>` (e.g. `EELEC-013532223`). SCE programs are named `<RATE>-<substation>` (e.g. `TOU-PRIME-Eagle Rock`).
 
-### Computed tariffs (URDB) — 3 initial rate schedules
+### Computed tariffs (URDB)
 
-Published rate schedules from the [OpenEI Utility Rate Database](https://openei.org/wiki/Utility_Rate_Database). Prices are computed from the tariff definition — no external data feed needed. Coverage will expand to all California tariffs.
+Published rate schedules from the [OpenEI Utility Rate Database](https://openei.org/wiki/Utility_Rate_Database). Prices are computed from the tariff definition — no external data feed needed. Coverage continues to expand toward full California utility coverage.
 
-| Utility | Rate | Type | Program |
-|---------|------|------|---------|
+| Utility | Rate(s) | Type | Program(s) |
+|---------|---------|------|------------|
 | **PG&E** | E-1 Region P | Residential TOU | `PGE-E-1 - Baseline Region P` |
 | **SCE** | TOU-D-2 | Residential TOU | `SCE-Time-of-use Domestic: TOU-D-2` |
 | **SDG&E** | DR-TOU Coastal | Residential TOU | `SDGE-DR- TOU- Coastal Baseline Region` |
+| **City of Palo Alto Utilities** | Multiple schedules | Residential, Commercial, Municipal | `City-Schedule E1 ...`, `City-Large Commercial ...`, etc. |
 
-One program per tariff. Unlike feed-based tariffs, computed tariffs don't vary by circuit or substation — the published rate schedule applies uniformly.
+One program per URDB tariff. Unlike feed-based tariffs, computed tariffs don't vary by circuit or substation — the published rate schedule applies uniformly.
 
 ### GHG emissions (MOER)
 
@@ -74,7 +77,7 @@ One program per tariff. Unlike feed-based tariffs, computed tariffs don't vary b
 
 MOER programs publish hourly marginal operating emissions rate in **g CO2/kWh**, aggregated from native 5-minute [SGIP Signal](https://sgipsignal.com/) data. Each event contains 24 hourly intervals, same as pricing events.
 
-**Total: 34 pricing tariffs + 11 GHG emissions regions** (31 feed-based + 3 computed + 11 GHG)
+Tens of pricing tariffs plus GHG emissions for California grid regions, with more added over time. See [Discovering what's currently live](#discovering-whats-currently-live) for a programmatic enumeration.
 
 ## Finding your program
 

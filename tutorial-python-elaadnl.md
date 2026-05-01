@@ -16,7 +16,7 @@ By the end, you'll have a script that:
 
 ## The price server
 
-A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market via [GridX](https://www.gridx.com/). Covers 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Base URL:
+A public OpenADR 3 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market via [GridX](https://www.gridx.com/). Covers California utility rate schedules from PG&E and SCE, plus GHG emissions for California grid regions. Base URL:
 
 ```
 https://price.grid-coordination.energy/openadr3/3.1.0
@@ -94,7 +94,7 @@ Output:
   EELEC-024040403
 ```
 
-> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are 1,645 programs total (31 tariffs × location + 11 GHG regions). Use the `pagination` parameter to page through them. For e.g. `ven.programs.get_programs(target=None, pagination=PaginationFilter(skip=50, limit=50))` will get the second page of 50 programs.
+> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are far more than 50 programs available — use the `pagination` parameter to page through them. For example, `ven.programs.get_programs(target=None, pagination=PaginationFilter(skip=50, limit=50))` returns the second page of 50 programs.
 
 The ElaadNL models are Pydantic v2 with strong typing. Each program has:
 

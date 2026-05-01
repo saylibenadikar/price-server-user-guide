@@ -15,7 +15,7 @@ By the end, you'll have a script that:
 
 ## The price server
 
-A public OpenADR 3.1.0 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Base URL:
+A public OpenADR 3 VTN serving hourly California marginal electricity prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). Covers California utility rate schedules from PG&E and SCE, plus GHG emissions for California grid regions. Base URL:
 
 ```
 https://price.grid-coordination.energy/openadr3/3.1.0
@@ -282,8 +282,8 @@ Available MOER programs: `MOER-PGE`, `MOER-SCE`, `MOER-SDGE`, `MOER-LADWP`, `MOE
 ## Going further
 
 - **Paginate beyond the first 50**: `ven.programs(skip=50, limit=50)`, `skip=100`, etc. Programs are grouped by tariff — PG&E rates first, then SCE, then MOER.
-- **PG&E tariffs (16)**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`). 59 circuits per tariff.
-- **SCE tariffs (15)**: residential TOU, EV, general service, public authority. 46 substations per tariff. SCE prices are significantly higher (~$0.18/kWh vs PG&E's ~$0.03/kWh).
+- **PG&E tariffs**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`) — each served across PG&E distribution feeders.
+- **SCE tariffs**: residential TOU, EV, general service, public authority — each served across SCE substations. SCE prices are significantly higher (~$0.18/kWh vs PG&E's ~$0.03/kWh).
 - **GHG emissions**: 11 MOER programs covering California and neighboring grid regions. Values in g CO2/kWh. See [README.md#ghg-emissions-moer](README.md#ghg-emissions-moer) for the full list.
 - **Subscribe to price updates via MQTT**: the broker at `mqtt.grid-coordination.energy` supports anonymous subscribe on `openadr3/3.1.0/events/#`. See [mqtt-notifications.md](mqtt-notifications.md) for details.
 - **User-Agent**: set `user_agent="your-app/1.0"` when creating the client so the server operator can identify your application in access logs.

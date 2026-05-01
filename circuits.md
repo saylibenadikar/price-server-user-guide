@@ -21,9 +21,9 @@ For example, circuit `013532223`:
 
 Sources: [PG&E 2022 Grid Needs Assessment](https://docs.cpuc.ca.gov/PublishedDocs/Efile/G000/M496/K629/496629893.PDF) (CPUC filing, Appendix D) and the [Priicer community cross-reference](https://forum.priicer.com/t/pg-e-dynamic-pilot-california/33).
 
-### Available PG&E circuits (59)
+### Available PG&E circuits
 
-These are the 59 circuits currently available in the GridX Pricing API. Each circuit has a program for every PG&E rate schedule (EELEC, BEV1, BEV2P, BEV2S, B6, B19P) — 354 PG&E programs total.
+These are the PG&E circuits currently served by the GridX Pricing API. Each circuit has a program for every PG&E feed-based rate schedule. See [README.md](README.md#feed-based-tariffs-gridx) for the rate list.
 
 #### Bay Area
 
@@ -111,9 +111,9 @@ These are the 59 circuits currently available in the GridX Pricing API. Each cir
 
 ## SCE substations
 
-Each SCE program is named `<RATE>-<substation>` (e.g. `TOU-PRIME-Eagle Rock`). The substation name identifies an SCE distribution substation. Each substation has a program for every SCE rate schedule (TOU-PRIME, TOU-D-49, TOU-D-58) — 138 SCE programs total.
+Each SCE program is named `<RATE>-<substation>` (e.g. `TOU-PRIME-Eagle Rock`). The substation name identifies an SCE distribution substation. Each substation has a program for every SCE feed-based rate schedule. See [README.md](README.md#feed-based-tariffs-gridx) for the rate list.
 
-### Available SCE substations (46)
+### Available SCE substations
 
 | Substation | | Substation | | Substation |
 |---|---|---|---|---|

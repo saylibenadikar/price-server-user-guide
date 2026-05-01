@@ -15,7 +15,7 @@ By the end, you'll have a REPL session that:
 
 ## The price server
 
-A public OpenADR 3.1.0 VTN serving hourly PG&E EELEC marginal prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). One program per PG&E distribution circuit (~59 circuits). Base URL:
+A public OpenADR 3 VTN serving hourly PG&E EELEC marginal prices from the CAISO Day-Ahead Market, published via [GridX](https://www.gridx.com/). One program per PG&E distribution circuit. Base URL:
 
 ```
 https://price.grid-coordination.energy/openadr3/3.1.0
@@ -302,8 +302,8 @@ If tomorrow's data hasn't been published yet (which sometimes happens early in t
 ## Going further
 
 - **Paginate beyond the first 50**: `(:body (base/search-programs my-ven {:skip 50 :limit 50}))`, `{:skip 100 :limit 50}`, etc. (returns raw OpenADR JSON).
-- **PG&E tariffs (16)**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`). 59 circuits per tariff.
-- **SCE tariffs (15)**: residential TOU, EV, general service, public authority. 46 substations per tariff. SCE prices are ~$0.18/kWh vs PG&E's ~$0.03/kWh.
+- **PG&E tariffs**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`) — each served across PG&E distribution feeders.
+- **SCE tariffs**: residential TOU, EV, general service, public authority — each served across SCE substations. SCE prices are ~$0.18/kWh vs PG&E's ~$0.03/kWh.
 - **GHG emissions**: `MOER-PGE`, `MOER-SCE`, `MOER-SDGE`, and 8 other regional programs publish hourly marginal GHG emissions in g CO2/kWh. Fetch the same way as prices: `(ven/poll-events my-ven {:program-id (ven/resolve-program-id my-ven "MOER-PGE")})`. See [README.md#ghg-emissions-moer](README.md#ghg-emissions-moer).
 - **Raw HTTP access**: `base/programs` returns coerced entities. For the raw wire format use `base/get-programs` (returns the HTTP response map).
 - **Subscribe to price updates via MQTT**: the broker at `mqtt.grid-coordination.energy` supports anonymous subscribe on `openadr3/3.1.0/events/#`. See [mqtt-notifications.md](mqtt-notifications.md). Use `ven/add-mqtt` and `ven/subscribe`.
