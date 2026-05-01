@@ -245,6 +245,26 @@ If an upstream source publishes incorrect, delayed, or missing data, that error 
 
 **Use at your own risk.** Do not rely on this service for safety-critical, life-critical, or financially material decisions without independent verification against the upstream source. We may modify, pause, or discontinue the service at any time without notice. Operators of EMS, appliances, or any automated system that consumes these signals are responsible for sanity-checking the values they receive and handling missing or anomalous data gracefully.
 
+## Terms of Use
+
+By accessing the price server (HTTPS API, MQTT broker, or this documentation), you agree to the following terms. If you do not agree, do not use the service.
+
+**Acceptable use.** You may use the price server for any lawful purpose, including commercial use. You agree not to:
+
+- Issue requests at a volume or pattern that degrades availability for other users (no aggressive polling, no parallel scraping floods, no denial-of-service)
+- Attempt to circumvent, probe, or exploit security measures or undocumented endpoints
+- Use the service to violate any applicable law or third-party right
+
+If you need high-volume or low-latency access, [open a Discussion](https://github.com/grid-coordination/price-server-user-guide/discussions) — we'd rather help you get what you need than have you hammer the public endpoint.
+
+**Attribution and redistribution.** You may redistribute, cache, or republish the data the price server provides. If you do, please cite the price server and the relevant upstream source (GridX/CalFUSE, OpenEI URDB, SGIP Signal/WattTime) so downstream consumers can trace provenance. Do not represent yourself as the original source of the data, and do not represent your republished signals as endorsed or warranted by us or by the upstream sources.
+
+**Indemnification.** You agree to indemnify and hold harmless Clark Communications Corporation, its operators, and the upstream data providers from any claims, damages, or liabilities arising from your use of the service or the data it publishes — including any decisions, automated actions, or downstream consequences resulting from price or emissions values you consume from this service.
+
+**No grant of rights to upstream data.** The price server's role is to repackage third-party signals into the OpenADR 3 protocol. Your use of the data published here does not grant you any license, ownership, or other rights in the underlying CAISO market data, URDB tariff definitions, or SGIP Signal emissions data beyond what those upstream sources independently grant. If your use case requires a formal data license, obtain it from the relevant upstream provider.
+
+**Modification and termination.** We may modify, rate-limit, suspend, or terminate access — for any user or in general — at any time, with or without notice, and without liability. We may modify these terms at any time by updating this document; continued use after a change constitutes acceptance of the revised terms.
+
 ## License
 
 [MIT License](LICENSE) - Copyright (c) 2026 Clark Communications Corporation
