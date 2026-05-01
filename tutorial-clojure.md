@@ -81,7 +81,7 @@ Now list the programs. The Clojure client returns coerced entity maps with names
 ;    "EELEC-013921103" "EELEC-014052103"]
 ```
 
-> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are 1,645 total — 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. PG&E program names follow the pattern `EELEC-<9-digit-circuit-id>`; SCE programs use `TOU-PRIME-<substation-name>`.
+> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are far more than 50 programs available — paginate with `(:body (base/search-programs my-ven {:skip 50 :limit 50}))` to get the next page of 50 (raw OpenADR JSON; `(base/programs my-ven)` returns coerced entity maps but is single-page). PG&E program names follow the pattern `EELEC-<9-digit-circuit-id>`; SCE programs use `TOU-PRIME-<substation-name>`.
 
 A simple tabular print:
 
@@ -301,7 +301,7 @@ If tomorrow's data hasn't been published yet (which sometimes happens early in t
 
 ## Going further
 
-- **All 1,645 programs**: paginate via the raw API: `(base/search-programs my-ven {:skip 50})`, `{:skip 100}`, etc.
+- **Paginate beyond the first 50**: `(:body (base/search-programs my-ven {:skip 50 :limit 50}))`, `{:skip 100 :limit 50}`, etc. (returns raw OpenADR JSON).
 - **PG&E tariffs (16)**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`). 59 circuits per tariff.
 - **SCE tariffs (15)**: residential TOU, EV, general service, public authority. 46 substations per tariff. SCE prices are ~$0.18/kWh vs PG&E's ~$0.03/kWh.
 - **GHG emissions**: `MOER-PGE`, `MOER-SCE`, `MOER-SDGE`, and 8 other regional programs publish hourly marginal GHG emissions in g CO2/kWh. Fetch the same way as prices: `(ven/poll-events my-ven {:program-id (ven/resolve-program-id my-ven "MOER-PGE")})`. See [README.md#ghg-emissions-moer](README.md#ghg-emissions-moer).

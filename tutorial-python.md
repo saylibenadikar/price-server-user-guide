@@ -72,7 +72,7 @@ EELEC-013532223  b54d3d1f-bc87-4e47-bbc1-2b95958283fc
 50 programs
 ```
 
-> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are 1,645 total — 31 tariffs across PG&E (59 circuits) and SCE (46 substations), plus 11 GHG emissions regions. Paginate with `ven.api.get_programs(skip=50)` to see more.
+> **Note:** You'll see 50 programs per page (the OpenADR 3 pagination limit). There are far more than 50 programs available — paginate with `ven.programs(skip=50, limit=50)` to get the next page of 50.
 >
 > All client methods (`programs()`, `find_program_by_name()`, `poll_events()`) return coerced [Pydantic](https://docs.pydantic.dev/) models — access fields as attributes, not dict keys.
 >
@@ -281,7 +281,7 @@ Available MOER programs: `MOER-PGE`, `MOER-SCE`, `MOER-SDGE`, `MOER-LADWP`, `MOE
 
 ## Going further
 
-- **All 1,645 programs**: paginate with `ven.api.get_programs(skip=50)`, `skip=100`, etc. Programs are grouped by tariff — PG&E rates first, then SCE, then MOER.
+- **Paginate beyond the first 50**: `ven.programs(skip=50, limit=50)`, `skip=100`, etc. Programs are grouped by tariff — PG&E rates first, then SCE, then MOER.
 - **PG&E tariffs (16)**: residential (`EELEC`), EV (`BEV1`, `BEV2P`, `BEV2S`), commercial (`B6`, `B10P`/`B10S`, `B19P`/`B19S`, `B20P`/`B20S`), agricultural (`AG-A1`, `AG-A2`, `AGBP`/`AGBS`, `AGCP`/`AGCS`). 59 circuits per tariff.
 - **SCE tariffs (15)**: residential TOU, EV, general service, public authority. 46 substations per tariff. SCE prices are significantly higher (~$0.18/kWh vs PG&E's ~$0.03/kWh).
 - **GHG emissions**: 11 MOER programs covering California and neighboring grid regions. Values in g CO2/kWh. See [README.md#ghg-emissions-moer](README.md#ghg-emissions-moer) for the full list.

@@ -232,14 +232,21 @@ The price server serves 9 rate schedules:
 | PG&E | EELEC, BEV1, BEV2P, BEV2S, B6, B19P | 59 feeders (9-digit IDs) |
 | SCE | TOU-PRIME, TOU-D-49, TOU-D-58 | 46 substations (names like "Eagle Rock") |
 
-To list SCE programs, paginate past the PG&E ones:
+To fetch a single page of programs (rather than the full list), use `get_programs` with `PaginationOptions`:
 
 ```rust
-// SCE programs start around skip=354
-// (after 6 PGE rates × 59 circuits)
+use openleadr_client::PaginationOptions;
+
+let page2 = client
+    .get_programs(Filter::<&str>::None, PaginationOptions { skip: 50, limit: 50 })
+    .await
+    .unwrap();
+println!("page 2: {} programs", page2.len());
 ```
 
-Or filter the full list:
+50 is the OpenADR 3 hard limit for `limit` — the server rejects larger values.
+
+To find programs for a specific rate, filter the full list:
 
 ```rust
 let sce_programs: Vec<_> = programs
